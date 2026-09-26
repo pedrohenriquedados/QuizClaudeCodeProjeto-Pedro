@@ -15,7 +15,8 @@ const state = {
   questions: [],
   currentIndex: 0,
   score: 0,
-  totalTimeSeconds: 0,
+  totalTimeMs: 0,
+  questionStartedAt: 0,
   timerId: null,
   timeLeft: TIME_PER_QUESTION,
   answered: false
@@ -60,8 +61,12 @@ let selectedLevel = null;
 
 levelButtons.forEach((btn) => {
   btn.addEventListener("click", () => {
-    levelButtons.forEach((b) => b.classList.remove("selected"));
+    levelButtons.forEach((b) => {
+      b.classList.remove("selected");
+      b.setAttribute("aria-pressed", "false");
+    });
     btn.classList.add("selected");
+    btn.setAttribute("aria-pressed", "true");
     selectedLevel = btn.dataset.level;
     updateStartButtonState();
   });
@@ -103,7 +108,7 @@ function startQuiz() {
   state.questions = buildQuestionSet(state.level);
   state.currentIndex = 0;
   state.score = 0;
-  state.totalTimeSeconds = 0;
+  state.totalTimeMs = 0;
   showScreen("screen-question");
   loadQuestion();
 }
@@ -127,18 +132,21 @@ function loadQuestion() {
 function startTimer() {
   clearInterval(state.timerId);
   state.timeLeft = TIME_PER_QUESTION;
+  state.questionStartedAt = performance.now();
   updateTimerUI();
 
+  // Baseado no relógio real (não em contagem de ticks): não deriva nem é distorcido
+  // quando o navegador reduz a frequência dos timers em abas em segundo plano.
   state.timerId = setInterval(() => {
-    state.timeLeft -= 1;
-    state.totalTimeSeconds += 1;
+    const elapsed = (performance.now() - state.questionStartedAt) / 1000;
+    state.timeLeft = Math.max(0, TIME_PER_QUESTION - Math.floor(elapsed));
     updateTimerUI();
 
-    if (state.timeLeft <= 0) {
+    if (elapsed >= TIME_PER_QUESTION) {
       clearInterval(state.timerId);
       handleAnswer(null); // tempo esgotado
     }
-  }, 1000);
+  }, 250);
 }
 
 function stopTimer() {
@@ -160,8 +168,8 @@ function handleAnswer(answerGiven) {
   const question = state.questions[state.currentIndex];
   const isCorrect = answerGiven === question.resposta;
 
-  // state.totalTimeSeconds já é incrementado a cada segundo pelo próprio timer (startTimer),
-  // então nada precisa ser somado aqui além de contabilizar o acerto.
+  const elapsedMs = Math.min(performance.now() - state.questionStartedAt, TIME_PER_QUESTION * 1000);
+  state.totalTimeMs += elapsedMs;
   if (isCorrect) state.score += 1;
 
   trueBtn.disabled = true;
@@ -228,7 +236,7 @@ async function submitScoreToSupabase() {
     score: state.score,
     total_questions: state.questions.length,
     level_played: state.level,
-    total_time_seconds: state.totalTimeSeconds
+    total_time_seconds: Math.round(state.totalTimeMs / 1000)
   };
 
   const { error } = await saveResultToLeaderboard(entry);
@@ -238,24 +246,19 @@ async function submitScoreToSupabase() {
     return;
   }
 
-  const { data, error: fetchError } = await fetchLeaderboard(1000);
-  if (fetchError || !data) return;
+  const { rank, error: rankError } = await fetchRank(entry.score, entry.total_time_seconds);
+  if (rankError || rank === null) return;
 
-  const position = data.findIndex(
-    (row) =>
-      row.player_name === entry.player_name &&
-      row.score === entry.score &&
-      row.total_time_seconds === entry.total_time_seconds
-  );
-  if (position >= 0) {
-    resultRankEl.textContent = `Você ficou em #${position + 1}º lugar no ranking geral!`;
-    resultRankEl.classList.remove("text-muted");
-  }
+  resultRankEl.textContent = `Você ficou em #${rank}º lugar no ranking geral!`;
+  resultRankEl.classList.remove("text-muted");
 }
 
 playAgainBtn.addEventListener("click", () => {
   selectedLevel = null;
-  levelButtons.forEach((b) => b.classList.remove("selected"));
+  levelButtons.forEach((b) => {
+    b.classList.remove("selected");
+    b.setAttribute("aria-pressed", "false");
+  });
   updateStartButtonState();
   showScreen("screen-home");
 });

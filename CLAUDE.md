@@ -9,7 +9,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Stack:** HTML5 + CSS3 + Vanilla JavaScript (no frameworks, no build step)
 - **Backend:** Supabase (PostgreSQL) for leaderboard persistence
 - **Hosting:** Vercel (static site) + Supabase
-- **Status:** MVP implementation in progress
+- **Status:** live at https://quiz-claude-code-projeto-pedro.vercel.app/ (auto-deploys from `main`)
 
 ## Key Architecture
 
@@ -50,7 +50,7 @@ const state = {
 
 ### Question Shuffling
 - Within each level, 10 questions are shuffled (Fisher-Yates) per quiz session for variety
-- "All levels" mode concatenates shuffled Beginner + Intermediate + Avanced (30 questions total)
+- "All levels" mode concatenates shuffled Beginner + Intermediate + Advanced (30 questions total)
 
 ## Supabase Integration
 
@@ -118,11 +118,11 @@ Supabase failures (network, service down) must not block the quiz:
 ## Naming & Code Conventions
 
 - **Portuguese UI:** all user-facing text is in pt-BR (labels, buttons, messages)
-- **English code:** variable/function names, comments, and documentation are in English
+- **Code language:** identifiers are in English; code comments are in Portuguese (match the surrounding code)
 - **Camel case:** for JavaScript identifiers (`playerName`, `timeLeft`, `feedbackBox`)
 - **Kebab case:** for HTML classes (`.question-meta`, `.timer-wrap`, `.btn-primary`)
 
-## Privacyを & Security Notes
+## Privacy & Security Notes
 
 - **Never hardcode `service_role` key** — only the anon/public key goes in frontend
 - **Email privacy:** view `public_leaderboard` excludes email column; RLS prevents direct table access

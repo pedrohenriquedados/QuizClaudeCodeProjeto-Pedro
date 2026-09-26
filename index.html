@@ -4,6 +4,18 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Quiz Claude Code — Analytics Engineers</title>
+<meta name="description" content="Quiz de Verdadeiro ou Falso sobre Claude Code para Analytics Engineers: 30 perguntas em 3 níveis, com explicação e ranking global." />
+<meta name="theme-color" content="#0d0d0d" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="pt_BR" />
+<meta property="og:title" content="Quiz: Claude Code para Analytics Engineers" />
+<meta property="og:description" content="Verdadeiro ou Falso sobre Claude Code, do básico ao avançado, com foco em SQL, dbt e pipelines. Entre no ranking!" />
+<meta property="og:url" content="https://quiz-claude-code-projeto-pedro.vercel.app/" />
+<meta property="og:image" content="https://quiz-claude-code-projeto-pedro.vercel.app/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
@@ -39,14 +51,19 @@
       </div>
 
       <div class="form-group">
-        <label>Escolha o nível</label>
-        <div class="level-buttons">
-          <button class="level-btn" data-level="iniciante">Iniciante</button>
-          <button class="level-btn" data-level="intermediario">Intermediário</button>
-          <button class="level-btn" data-level="avancado">Avançado</button>
-          <button class="level-btn" data-level="todos">Todos os níveis</button>
+        <label id="level-label">Escolha o nível</label>
+        <div class="level-buttons" role="group" aria-labelledby="level-label">
+          <button type="button" class="level-btn" aria-pressed="false" data-level="iniciante">Iniciante</button>
+          <button type="button" class="level-btn" aria-pressed="false" data-level="intermediario">Intermediário</button>
+          <button type="button" class="level-btn" aria-pressed="false" data-level="avancado">Avançado</button>
+          <button type="button" class="level-btn" aria-pressed="false" data-level="todos">Todos os níveis</button>
         </div>
       </div>
+
+      <p class="privacy-note">
+        Ao jogar, seu nome aparece publicamente no ranking. O e-mail (opcional) fica armazenado
+        e nunca é exibido.
+      </p>
 
       <div class="actions">
         <button id="start-btn" class="btn btn-primary" disabled>Começar ▶</button>
@@ -75,7 +92,7 @@
       </div>
 
       <div id="feedback-box" class="feedback-box hidden">
-        <p id="feedback-title" class="feedback-title"></p>
+        <p id="feedback-title" class="feedback-title" role="status" aria-live="polite"></p>
         <p id="feedback-explanation" class="feedback-explanation"></p>
         <button id="next-btn" class="btn btn-primary">Próxima pergunta</button>
       </div>
@@ -87,7 +104,7 @@
       <h2>Resultado final</h2>
       <p class="result-score" id="result-score">0 / 0</p>
       <p id="result-message" class="result-message"></p>
-      <p id="result-rank" class="result-rank"></p>
+      <p id="result-rank" class="result-rank" aria-live="polite"></p>
 
       <div class="actions">
         <button id="play-again-btn" class="btn btn-primary">Jogar novamente</button>
@@ -99,7 +116,7 @@
     <section id="screen-leaderboard" class="screen">
       <p class="prompt">$ quiz --leaderboard --top 20</p>
       <h2>Ranking global</h2>
-      <p id="leaderboard-status" class="leaderboard-status hidden"></p>
+      <p id="leaderboard-status" class="leaderboard-status hidden" role="status" aria-live="polite"></p>
       <div class="table-wrap">
         <table class="leaderboard-table">
           <thead>
@@ -122,7 +139,9 @@
   </main>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js"
+        integrity="sha384-Rj26LVGvoeRVR6+mwQmFfcR3QOBEwT+ZmuCWpuiqeTzJpCs0ER4ITAWGb4Hiy3Ok"
+        crossorigin="anonymous"></script>
 <script src="js/questions.js"></script>
 <script src="js/supabaseClient.js"></script>
 <script src="js/app.js"></script>

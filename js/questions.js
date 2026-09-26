@@ -31,9 +31,9 @@ const QUESTIONS = [
     id: "iniciante-04",
     nivel: "iniciante",
     categoria: "conceitos-gerais",
-    enunciado: "Claude Code só funciona com projetos escritos em Python.",
+    enunciado: "Para usar o Claude Code, o projeto precisa estar escrito em Python.",
     resposta: false,
-    explicacao: "Claude Code é agnóstico de linguagem: funciona com SQL, Python, JavaScript, arquivos de configuração YAML/JSON, e praticamente qualquer tipo de arquivo de texto de um projeto."
+    explicacao: "Claude Code é agnóstico de linguagem: funciona com SQL, Python, JavaScript, arquivos de configuração YAML/JSON e praticamente qualquer arquivo de texto do projeto."
   },
   {
     id: "iniciante-05",
@@ -55,17 +55,17 @@ const QUESTIONS = [
     id: "iniciante-07",
     nivel: "iniciante",
     categoria: "conceitos-gerais",
-    enunciado: "Claude Code funciona apenas em computadores com Windows.",
+    enunciado: "Claude Code roda em Windows, mas não em macOS nem em Linux.",
     resposta: false,
-    explicacao: "Claude Code funciona em macOS, Linux e Windows (inclusive via WSL), não sendo restrito a um único sistema operacional."
+    explicacao: "Claude Code funciona em macOS, Linux e Windows (inclusive via WSL), sem ficar restrito a um único sistema operacional."
   },
   {
     id: "iniciante-08",
     nivel: "iniciante",
     categoria: "boas-praticas",
-    enunciado: "Usar Claude Code elimina completamente a necessidade de revisão humana do código gerado.",
+    enunciado: "Com o Claude Code, não é mais necessário revisar o código gerado antes de aplicá-lo em produção.",
     resposta: false,
-    explicacao: "Mesmo com IA gerando código, a boa prática recomendada é sempre revisar as alterações antes de aplicá-las em produção, especialmente em pipelines de dados."
+    explicacao: "Mesmo com IA gerando código, a boa prática é revisar as alterações antes de aplicá-las em produção, especialmente em pipelines de dados."
   },
   {
     id: "iniciante-09",
@@ -89,9 +89,9 @@ const QUESTIONS = [
     id: "intermediario-01",
     nivel: "intermediario",
     categoria: "instalacao",
-    enunciado: "Claude Code é instalado via npm, o gerenciador de pacotes do Node.js.",
-    resposta: true,
-    explicacao: "A instalação padrão do Claude Code é feita através do comando `npm install -g @anthropic-ai/claude-code`, exigindo Node.js instalado."
+    enunciado: "Para instalar o Claude Code, é obrigatório ter o Node.js e usar o npm.",
+    resposta: false,
+    explicacao: "O npm (npm install -g @anthropic-ai/claude-code, com Node.js 18+) continua sendo uma opção, mas a Anthropic recomenda o instalador nativo, que não depende de Node.js."
   },
   {
     id: "intermediario-02",
@@ -113,9 +113,9 @@ const QUESTIONS = [
     id: "intermediario-04",
     nivel: "intermediario",
     categoria: "comandos",
-    enunciado: "Claude Code consegue executar comandos de git (criar commits, branches, fazer push) desde que receba permissão do usuário.",
-    resposta: true,
-    explicacao: "Claude Code pode executar comandos git (como commit, criar branch, fazer push, ver diffs) através da ferramenta bash, desde que o usuário conceda permissão."
+    enunciado: "Claude Code precisa de uma extensão à parte para conseguir executar comandos git, como criar commits.",
+    resposta: false,
+    explicacao: "Claude Code executa comandos git (commit, branch, push, diff) pela sua ferramenta de shell (Bash) nativa, desde que o usuário conceda a permissão."
   },
   {
     id: "intermediario-05",
@@ -137,9 +137,9 @@ const QUESTIONS = [
     id: "intermediario-07",
     nivel: "intermediario",
     categoria: "seguranca",
-    enunciado: "Por padrão, o Claude Code executa qualquer comando (como apagar arquivos) sem nunca pedir confirmação ao usuário.",
+    enunciado: "Por padrão, o Claude Code roda comandos que alteram arquivos ou o sistema sem pedir confirmação ao usuário.",
     resposta: false,
-    explicacao: "Claude Code tem modos de permissão que pedem confirmação antes de ações potencialmente sensíveis, como editar arquivos ou rodar comandos no terminal."
+    explicacao: "Claude Code tem modos de permissão que pedem confirmação antes de ações sensíveis, como editar arquivos ou rodar comandos no terminal."
   },
   {
     id: "intermediario-08",
@@ -153,17 +153,17 @@ const QUESTIONS = [
     id: "intermediario-09",
     nivel: "intermediario",
     categoria: "conceitos-gerais",
-    enunciado: "Claude Code não guarda nenhum contexto entre as mensagens trocadas dentro de uma mesma sessão.",
+    enunciado: "Dentro de uma mesma sessão, cada mensagem enviada ao Claude Code é tratada de forma isolada, sem lembrar do que foi conversado antes.",
     resposta: false,
-    explicacao: "Dentro de uma mesma sessão, o Claude Code mantém o histórico da conversa e das ações realizadas, usando esse contexto para decisões seguintes."
+    explicacao: "Dentro de uma mesma sessão, o Claude Code mantém o histórico da conversa e das ações realizadas, usando esse contexto nas decisões seguintes."
   },
   {
     id: "intermediario-10",
     nivel: "intermediario",
     categoria: "boas-praticas",
-    enunciado: "Ao usar Claude Code em um pipeline de dados, é uma boa prática revisar o código gerado antes de rodá-lo em produção.",
-    resposta: true,
-    explicacao: "Mesmo com automações e permissões configuradas, revisar transformações de dados geradas por IA antes do deploy em produção evita erros custosos em relatórios e decisões de negócio."
+    enunciado: "Se o código gerado pelo Claude Code passa nos testes automatizados, revisá-lo antes de ir para produção deixa de ser necessário.",
+    resposta: false,
+    explicacao: "Testes não cobrem tudo. Em transformações de dados, erros como joins que duplicam linhas ou regras de negócio mal interpretadas podem passar despercebidos, então a revisão humana continua importante."
   },
 
   // ==================== AVANÇADO ====================
@@ -187,17 +187,17 @@ const QUESTIONS = [
     id: "avancado-03",
     nivel: "avancado",
     categoria: "arquitetura",
-    enunciado: "Hooks no Claude Code permitem executar comandos automaticamente em resposta a eventos, como antes ou depois do uso de uma ferramenta.",
-    resposta: true,
-    explicacao: "Hooks são configurações que disparam scripts/comandos em pontos específicos do ciclo de vida do agente (ex: antes de rodar uma tool, ao final de uma sessão), úteis para validações e automações."
+    enunciado: "Hooks no Claude Code são usados para trocar o modelo de IA em uso, e não para executar comandos em resposta a eventos.",
+    resposta: false,
+    explicacao: "Hooks disparam comandos ou scripts em pontos do ciclo de vida do agente (ex: PreToolUse, PostToolUse). São úteis para formatar código, rodar lint, bloquear comandos perigosos e registrar auditoria."
   },
   {
     id: "avancado-04",
     nivel: "avancado",
     categoria: "arquitetura",
-    enunciado: "Subagentes (subagents) no Claude Code são sempre idênticos entre si e não podem ter conjuntos de ferramentas diferentes.",
+    enunciado: "Cada subagente do Claude Code é criado com o mesmo conjunto fixo de ferramentas, sem possibilidade de personalização.",
     resposta: false,
-    explicacao: "Subagentes podem ser configurados com propósitos, instruções e conjuntos de ferramentas diferentes entre si, permitindo especialização (ex: um agente só para revisão de código)."
+    explicacao: "Subagentes podem ter instruções e ferramentas próprias (ex: um agente somente-leitura para revisão de código e outro com permissão de edição), o que permite especialização."
   },
   {
     id: "avancado-05",
@@ -211,9 +211,9 @@ const QUESTIONS = [
     id: "avancado-06",
     nivel: "avancado",
     categoria: "seguranca",
-    enunciado: "Claude Code não oferece nenhum mecanismo de controle sobre quais ferramentas ou comandos podem ser executados automaticamente.",
+    enunciado: "Não é possível restringir quais comandos o Claude Code executa automaticamente: só existe a opção de liberar tudo ou confirmar tudo.",
     resposta: false,
-    explicacao: "Claude Code possui modos e listas de permissão (allow/deny) configuráveis, permitindo restringir quais comandos e ferramentas podem rodar sem confirmação manual."
+    explicacao: "Claude Code permite regras de permissão allow, ask e deny configuráveis em settings.json. Uma regra deny sempre prevalece sobre uma regra allow."
   },
   {
     id: "avancado-07",
@@ -227,9 +227,9 @@ const QUESTIONS = [
     id: "avancado-08",
     nivel: "avancado",
     categoria: "arquitetura",
-    enunciado: "O Claude Agent SDK permite construir agentes customizados usando a mesma base de tecnologia por trás do Claude Code.",
-    resposta: true,
-    explicacao: "O Claude Agent SDK expõe as capacidades usadas pelo Claude Code para que desenvolvedores construam seus próprios agentes e fluxos de trabalho customizados."
+    enunciado: "O Claude Agent SDK foi criado para treinar novos modelos Claude com os dados do usuário.",
+    resposta: false,
+    explicacao: "O Claude Agent SDK (Python e TypeScript) serve para construir agentes próprios usando o mesmo loop de agente, ferramentas, sistema de permissões e subagentes do Claude Code."
   },
   {
     id: "avancado-09",
@@ -243,8 +243,8 @@ const QUESTIONS = [
     id: "avancado-10",
     nivel: "avancado",
     categoria: "seguranca",
-    enunciado: "Por padrão, o Claude Code salva automaticamente em texto plano, sem qualquer restrição, todas as credenciais de banco de dados que encontrar nos arquivos do projeto.",
+    enunciado: "O Claude Code guarda automaticamente, num arquivo do projeto, as credenciais de banco de dados que encontra nos seus arquivos.",
     resposta: false,
-    explicacao: "Isso não é um comportamento do Claude Code. Credenciais devem ser gerenciadas com boas práticas de segurança (variáveis de ambiente, secrets managers) independentemente da ferramenta, e o Claude Code não coleta ou persiste credenciais automaticamente."
+    explicacao: "Esse não é um comportamento do Claude Code. Segredos devem ficar em variáveis de ambiente ou secrets managers, e regras de deny podem impedir que o Claude Code leia arquivos sensíveis como .env."
   }
 ];

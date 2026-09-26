@@ -43,3 +43,22 @@ async function fetchLeaderboard(limit = 20) {
     .limit(limit);
   return { data: data || [], error };
 }
+
+/**
+ * Posição de um resultado no ranking geral, calculada no banco (sem baixar a lista inteira):
+ * 1 + quantidade de resultados melhores (mais pontos, ou mesmos pontos em menos tempo).
+ * @param {number} score
+ * @param {number} totalTimeSeconds
+ */
+async function fetchRank(score, totalTimeSeconds) {
+  if (!supabaseClient) {
+    return { rank: null, error: new Error("Supabase não configurado (ver js/supabaseClient.js).") };
+  }
+  const s = Number(score);
+  const t = Number(totalTimeSeconds);
+  const { count, error } = await supabaseClient
+    .from("public_leaderboard")
+    .select("id", { count: "exact", head: true })
+    .or(`score.gt.${s},and(score.eq.${s},total_time_seconds.lt.${t})`);
+  return { rank: error || count === null ? null : count + 1, error };
+}
