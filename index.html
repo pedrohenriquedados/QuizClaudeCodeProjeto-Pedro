@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Quiz Claude Code — Analytics Engineers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="terminal-window">
+  <div class="terminal-titlebar">
+    <span class="dot dot-red"></span>
+    <span class="dot dot-yellow"></span>
+    <span class="dot dot-green"></span>
+    <span class="terminal-title">claude-code-quiz — analytics-engineer</span>
+  </div>
+
+  <main class="terminal-body">
+
+    <!-- HOME -->
+    <section id="screen-home" class="screen active">
+      <p class="prompt">$ quiz --topic "claude-code" --audience "analytics-engineer"</p>
+      <h1>Quiz: Claude Code para Analytics Engineers</h1>
+      <p class="subtitle">
+        Teste seu conhecimento sobre o Claude Code — do conceito de negócio até detalhes técnicos avançados,
+        com foco em quem trabalha com dados. Verdadeiro ou Falso, com tempo por pergunta.
+      </p>
+
+      <div class="form-group">
+        <label for="player-name">Nome</label>
+        <input type="text" id="player-name" placeholder="Como podemos te chamar?" maxlength="40" />
+      </div>
+      <div class="form-group">
+        <label for="player-email">E-mail (opcional)</label>
+        <input type="email" id="player-email" placeholder="seuemail@exemplo.com" maxlength="120" />
+      </div>
+
+      <div class="form-group">
+        <label>Escolha o nível</label>
+        <div class="level-buttons">
+          <button class="level-btn" data-level="iniciante">Iniciante</button>
+          <button class="level-btn" data-level="intermediario">Intermediário</button>
+          <button class="level-btn" data-level="avancado">Avançado</button>
+          <button class="level-btn" data-level="todos">Todos os níveis</button>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="start-btn" class="btn btn-primary" disabled>Começar ▶</button>
+        <button id="view-leaderboard-btn" class="btn btn-ghost">Ver ranking</button>
+      </div>
+    </section>
+
+    <!-- PERGUNTA -->
+    <section id="screen-question" class="screen">
+      <div class="question-meta">
+        <span id="question-counter"></span>
+        <span id="question-level" class="badge"></span>
+      </div>
+
+      <div class="timer-wrap">
+        <div id="timer-bar" class="timer-bar"></div>
+      </div>
+      <p class="timer-number">⏱ <span id="timer-number">20</span>s</p>
+
+      <p class="prompt">$ cat pergunta.txt</p>
+      <p id="question-text" class="question-text"></p>
+
+      <div class="answer-buttons">
+        <button id="true-btn" class="btn btn-answer btn-true">✔ Verdadeiro</button>
+        <button id="false-btn" class="btn btn-answer btn-false">✘ Falso</button>
+      </div>
+
+      <div id="feedback-box" class="feedback-box hidden">
+        <p id="feedback-title" class="feedback-title"></p>
+        <p id="feedback-explanation" class="feedback-explanation"></p>
+        <button id="next-btn" class="btn btn-primary">Próxima pergunta</button>
+      </div>
+    </section>
+
+    <!-- RESULTADO -->
+    <section id="screen-result" class="screen">
+      <p class="prompt">$ quiz --result</p>
+      <h2>Resultado final</h2>
+      <p class="result-score" id="result-score">0 / 0</p>
+      <p id="result-message" class="result-message"></p>
+      <p id="result-rank" class="result-rank"></p>
+
+      <div class="actions">
+        <button id="play-again-btn" class="btn btn-primary">Jogar novamente</button>
+        <button id="result-leaderboard-btn" class="btn btn-ghost">Ver ranking completo</button>
+      </div>
+    </section>
+
+    <!-- LEADERBOARD -->
+    <section id="screen-leaderboard" class="screen">
+      <p class="prompt">$ quiz --leaderboard --top 20</p>
+      <h2>Ranking global</h2>
+      <p id="leaderboard-status" class="leaderboard-status hidden"></p>
+      <div class="table-wrap">
+        <table class="leaderboard-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nome</th>
+              <th>Pontuação</th>
+              <th>Nível</th>
+              <th>Tempo</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboard-body"></tbody>
+        </table>
+      </div>
+      <div class="actions">
+        <button id="leaderboard-back-btn" class="btn btn-ghost">Voltar</button>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/questions.js"></script>
+<script src="js/supabaseClient.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
